@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/epub_menu_font_text"
+        android:icon="@drawable/ic_font_text_white"
+        app:showAsAction="always"
+        android:title="Font" />
+    <item
+        android:id="@+id/epub_menu_light"
+        android:icon="@drawable/ic_sunny_white"
+        app:showAsAction="always"
+        android:title="Light" />
+    <item
+        android:id="@+id/epub_menu_list"
+        android:icon="@drawable/ic_list_bulleted_white"
+        app:showAsAction="always"
+        android:title="Light" />
+
+</menu>

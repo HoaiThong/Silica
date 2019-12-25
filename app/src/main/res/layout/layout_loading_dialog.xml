@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <ProgressBar
+        android:id="@+id/progressBar_myProgressDialog"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:indeterminate="true" />
+
+    <TextView
+        android:id="@+id/title_myProgressDialog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|center_horizontal"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:text="Please wait! This may take a moment."
+        android:textSize="@dimen/activity_horizontal_margin" />
+
+</LinearLayout>

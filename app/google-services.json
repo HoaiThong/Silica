@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "296421834743",
+    "firebase_url": "https://silica-b9f32.firebaseio.com",
+    "project_id": "silica-b9f32",
+    "storage_bucket": "silica-b9f32.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296421834743:android:ebdba7c3e6741f145238f2",
+        "android_client_info": {
+          "package_name": "net.silica"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "296421834743-ctafu7d53urabkjq4adoo40h3bmval92.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.silica",
+            "certificate_hash": "1c98d5b98a2531a3c3f8f28972edc0f6d03dfea4"
+          }
+        },
+        {
+          "client_id": "296421834743-u41bhc0aflahhug7sv6co8pv9vpmjbrs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcGxZLcwlEsCI4hXR0IclqgKznTHX_ns0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "296421834743-u41bhc0aflahhug7sv6co8pv9vpmjbrs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
