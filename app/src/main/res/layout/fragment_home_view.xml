@@ -16,7 +16,6 @@
             android:id="@+id/banner_koniki"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             app:cardCornerRadius="6dp"
             app:cardElevation="6dp">
 
@@ -30,15 +29,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
-                <net.silica.imageSliderViewPager.IndicatorView
+                <com.google.android.material.tabs.TabLayout
                     android:id="@+id/indicator"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="22sp"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="14dp"
-                    app:hado_color_selected="@color/colorAccent"
-                    app:hado_radius_selected="5dp"
-                    app:hado_radius_unselected="3dp" />
+                    android:layout_marginBottom="16dp"
+                    app:tabBackground="@drawable/indicator_dot_tab_selector"
+                    app:tabGravity="center"
+                    app:tabIndicatorHeight="0dp"/>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
@@ -68,8 +67,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="6dp"
                     android:drawableEnd="@drawable/ic_keyboard_arrow_right"
                     android:fontFamily="@font/comfortaa_regular"
                     android:text="@string/bang_xep_hang"
@@ -108,8 +107,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="6dp"
                     android:drawableEnd="@drawable/ic_keyboard_arrow_right"
                     android:fontFamily="@font/comfortaa_regular"
                     android:text="@string/truyen_moi"
@@ -144,6 +143,7 @@
                     android:layout_height="18dp"
                     android:layout_gravity="center_vertical"
                     android:background="@color/colorPrimary"></TextView>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -182,6 +182,7 @@
                     android:layout_height="18dp"
                     android:layout_gravity="center_vertical"
                     android:background="@color/colorPrimary"></TextView>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -219,6 +220,7 @@
                     android:layout_height="18dp"
                     android:layout_gravity="center_vertical"
                     android:background="@color/colorPrimary"></TextView>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -257,6 +259,7 @@
                     android:layout_height="18dp"
                     android:layout_gravity="center_vertical"
                     android:background="@color/colorPrimary"></TextView>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -287,15 +290,15 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:text="Chi Tiết" />
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:text="Thay Đổi" />
             </LinearLayout>
         </LinearLayout>

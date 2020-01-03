@@ -40,31 +40,24 @@ import org.json.JSONObject;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class SignInDAO {
-    private OkHttpUtil okHttpUtil;
     private Activity mActivity;
     private Customer customer;
     private FirebaseAuth mAuth;
     private static final String TAG = "LoginActivity";
     private Gson gson;
-    private String url = "http://127.0.0.1/ServerKoniki/view/signin.php";
+    private String url = "http://127.0.0.1/silica/view/signin.php";
     private ProgressBar mProgressBar;
     private SessionManager sessionManager;
+    private LogOutDAO logOutDAO;
 
     public SignInDAO(Activity mActivity) {
         this.mActivity = mActivity;
-        gson = getGson();
-        okHttpUtil = new OkHttpUtil();
-        sessionManager=new SessionManager(mActivity);
-    }
-
-    public Gson getGson() {
-        final GsonBuilder builder = new GsonBuilder();
-        builder.excludeFieldsWithoutExposeAnnotation();
-        final Gson gson = builder.create();
-        return gson;
+        sessionManager = new SessionManager(mActivity);
+        logOutDAO = new LogOutDAO(mActivity);
     }
 
     public String getPackageData(String jsonCustomer, String label) {
@@ -139,8 +132,7 @@ public class SignInDAO {
         mAuth = FirebaseAuth.getInstance();
         customer = new Customer();
         customer.setIdTokenFcm(tokenFcm);
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getIdToken());
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getEmail() + "---" + acct.getDisplayName());
+        sessionManager.setReading("tokenfcm", tokenFcm);
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -159,23 +151,30 @@ public class SignInDAO {
                             if (user.getEmail() != (null)) customer.setEmailGoogle(user.getEmail());
                             if (user.getPhoneNumber() != (null))
                                 customer.setPhone(user.getPhoneNumber());
+                            if (user.getPhotoUrl() != (null))
+                                customer.setIconUrlCustomer(user.getPhotoUrl().toString());
+                            Locale current = mActivity.getResources().getConfiguration().locale;
+                            customer.setLocale(current.getCountry());
 
-                            String json = gson.toJson(customer);
-                            sessionManager.setReading("user",json);
+                            String json = customer.toJSONNoId();
+                            sessionManager.setReading("user", json);
                             String data = getPackageData(json, "Google");
-                            Log.d("======Gson======", json);
-                            OkHttpHandler httpHandler = new OkHttpHandler(mActivity);
-                            boolean bool = false;
-                            try {
-                                bool = httpHandler.execute(data).get();
-
-                            } catch (ExecutionException e) {
-                                bool = false;
-                                Log.d("======Gson======", e.toString());
-                            } catch (InterruptedException e) {
-                                bool = false;
-                                Log.d("======Gson======", e.toString());
-                            }
+                            sessionManager.setReading("datauser", data);
+                            registerServer(data);
+//                            OkHttpHandler httpHandler = new OkHttpHandler(mActivity);
+//                            int flag;
+//                            try {
+//                                flag = httpHandler.execute(data).get();
+//                                if (flag >= 0) {
+//                                    if (flag > 0) customer.setId(flag);
+//                                    redirectUI();
+//                                }
+//
+//                            } catch (ExecutionException e) {
+//                                Log.d("======Gson======", e.toString());
+//                            } catch (InterruptedException e) {
+//                                Log.d("======Gson======", e.toString());
+//                            }
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -189,6 +188,7 @@ public class SignInDAO {
     public void getFbInfo(String tokenFcm) {
         customer = new Customer();
         customer.setIdTokenFcm(tokenFcm);
+        sessionManager.setReading("tokenfcm", tokenFcm);
         if (AccessToken.getCurrentAccessToken() != null) {
             AccessToken access_token = AccessToken.getCurrentAccessToken();
             GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
@@ -201,37 +201,33 @@ public class SignInDAO {
                                 String id = object.optString(mActivity.getString(R.string.id));
                                 String email = object.optString(mActivity.getString(R.string.email));
                                 String link = object.optString(mActivity.getString(R.string.link));
+                                String firstName = object.optString(mActivity.getString(R.string.first_name));
+                                String lastName = object.optString(mActivity.getString(R.string.last_name));
+                                String sex = object.optString(mActivity.getString(R.string.gender));
+                                String dob = object.optString(mActivity.getString(R.string.birthday));
+                                String address = object.optString(mActivity.getString(R.string.address));
+                                String ageRange = object.optString(mActivity.getString(R.string.age_range));
                                 URL imageURL = extractFacebookIcon(id);
                                 customer.setIdFacebook(id);
                                 customer.setEmailFacebook(email);
                                 customer.setLinkFacebook(link);
                                 customer.setNameFaceBook(name);
+                                customer.setIconUrlCustomer(imageURL.toString());
+                                customer.setAddress(address);
+                                customer.setFirstName(firstName);
+                                customer.setLastName(lastName);
+                                customer.setSex(sex);
+                                customer.setDateOfBirth(dob);
+                                customer.setAgeRange(ageRange);
+                                Locale current = mActivity.getResources().getConfiguration().locale;
+                                customer.setLocale(current.getCountry());
 
-                                Log.d("name: ", object.toString());
-                                Log.d("id: ", id);
-                                Log.d("email: ", email);
-                                Log.d("link: ", link);
-                                Log.d("imageURL: ", imageURL.toString());
 
-                                String json = gson.toJson(customer);
-                                Log.d("======Gson======", json);
-                                sessionManager.setReading("user",json);
+                                String json = customer.toJSONNoId();
+                                sessionManager.setReading("user", json);
                                 String data = getPackageData(json, "Facebook");
-                                Log.d("======Gson======", json);
-                                OkHttpHandler httpHandler = new OkHttpHandler(mActivity);
-                                boolean bool = false;
-
-                                try {
-                                    bool = httpHandler.execute(data).get();
-
-                                } catch (ExecutionException e) {
-                                    bool = false;
-                                    Log.d("======Gson======", e.toString());
-                                } catch (InterruptedException e) {
-                                    bool = false;
-                                    Log.d("======Gson======", e.toString());
-                                }
-
+                                sessionManager.setReading("datauser", data);
+                                registerServer(data);
 
                             }
                         }
@@ -244,7 +240,7 @@ public class SignInDAO {
                                 JSONArray jsonArray,
                                 GraphResponse response) {
                             if (jsonArray != null) {
-                                Log.d("jsonArray: ", jsonArray.toString());
+                                Log.d("jsonArrayFace: ", jsonArray.toString());
                             }
                         }
                     });
@@ -257,6 +253,29 @@ public class SignInDAO {
             request1.executeAsync();
         }
 
+    }
+
+    public void registerServer(String data) {
+        OkHttpHandler httpHandler = new OkHttpHandler(mActivity);
+        Log.d("data",data);
+        int flag;
+        try {
+            flag = httpHandler.execute(data).get();
+            if (flag >= 0) {
+                sessionManager.setReading("idUser", String.valueOf(flag));
+                redirectUI();
+            } else {
+
+                mActivity.startActivity(mActivity.getIntent());
+            }
+
+        } catch (ExecutionException e) {
+            Toast.makeText(mActivity, mActivity.getString(R.string.msg_login_failed), Toast.LENGTH_SHORT).show();
+            logOutDAO.exit();
+        } catch (InterruptedException e) {
+            Toast.makeText(mActivity, mActivity.getString(R.string.msg_login_failed), Toast.LENGTH_SHORT).show();
+            logOutDAO.exit();
+        }
     }
 
     public URL extractFacebookIcon(String id) {

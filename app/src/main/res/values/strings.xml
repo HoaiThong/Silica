@@ -30,12 +30,20 @@
     <string name="email">email</string>
     <string name="link">link</string>
     <string name="fields">fields</string>
+    <string name="last_name">last_name</string>
+    <string name="first_name">first_name</string>
+    <string name="gender">gender</string>
+    <string name="birthday">birthday</string>
+    <string name="address">address</string>
+    <string name="age_range">age_range</string>
     <string name="fields_name">id,name,link,email,location,last_name,hometown,first_name,gender,birthday,age_range,address</string>
     <string name="data">data</string>
 
     <string name="wifi_connection">The active connection is wifi.</string>
     <string name="mobile_connection">The active connection is mobile.</string>
     <string name="no_wifi_or_mobile">No wireless or mobile connection.</string>
+
+    <string name="msg_login_failed">Đăng nhập không thành công! </string>
 
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="fcm_message">FCM Message</string>
@@ -61,6 +69,13 @@
 
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>
+
+
+    <string name="signin_by_facebook">SignIn By Facebook</string>
+    <string name="signin_by_google">SignIn By Google</string>
+    <string name="signin_by">Đăng nhập:</string>
+
+    <string name="xac_nhan">Yes</string>
 
 
 </resources>

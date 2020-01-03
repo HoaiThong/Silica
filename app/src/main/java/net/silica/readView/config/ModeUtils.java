@@ -7,6 +7,7 @@ import net.silica.sessionApp.SessionManager;
 
 
 public class ModeUtils {
+    private  String PREF_NAME = "cssStyle";
     SettingMode settingMode;
     SessionManager sessionManager;
     String contentsCSS;

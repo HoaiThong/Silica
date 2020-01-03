@@ -33,8 +33,6 @@ import net.silica.readView.EpubViewerActivity;
 public class InforActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
-    private DetailFragment detailFragment;
-    private ContentsFragment contentsFragment;
     RelativeLayout relativeLayout;
     CollapsingToolbarLayout mCollapsingToolbarLayout;
     AppBarLayout appBarLayout;

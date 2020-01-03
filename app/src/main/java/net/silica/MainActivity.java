@@ -36,12 +36,6 @@ public class MainActivity extends AppCompatActivity {
     Context mContext;
     FragmentManager fragmentManager;
     FragmentTransaction transaction;
-    CollapsingToolbarLayout collapsingToolbarLayout;
-    private ViewPager viewPager;
-    private IndicatorView indicatorView;
-    Timer timer;
-    int page = 0;
-    ArrayList<String> listImageSlider;
     UserFragment userFragment;
     HomeFragment homeFragment;
     NetworkChangeReceiver receiver;
@@ -59,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_library:
                     return true;
-                case R.id.navigation_subject:
+                case R.id.navigation_notification:
 //                    transaction = fragmentManager.beginTransaction();
 //                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 //                    transaction.replace(R.id.fragment_content, new AllFragment());

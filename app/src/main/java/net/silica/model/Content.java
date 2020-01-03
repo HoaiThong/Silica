@@ -7,76 +7,76 @@ import java.sql.Timestamp;
 
 public class Content implements Serializable {
     @Expose
-    private int id;
+    private int idContent;
     @Expose
-    private int idBook;
+    private Book book;
     @Expose
-    private String urlFile;
+    private String urlFileContent;
     @Expose
-    private String mimeType;
+    private String mimeTypeContent;
     @Expose
-    private float price;
+    private float priceContent;
     @Expose(serialize = false)
-    private Timestamp createAt;
+    private Timestamp createAtContent;
     @Expose(serialize = false)
-    private Timestamp updateAt;
+    private Timestamp updateAtContent;
 
     public Content() {
     }
 
-    public int getId() {
-        return id;
+    public int getIdContent() {
+        return idContent;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Book getBook() {
+        return book;
     }
 
-    public int getIdBook() {
-        return idBook;
+    public void setBook(Book book) {
+        this.book = book;
     }
 
-    public void setIdBook(int idBook) {
-        this.idBook = idBook;
+    public void setIdContent(int idContent) {
+        this.idContent = idContent;
     }
 
-    public String getUrlFile() {
-        return urlFile;
+    public String getUrlFileContent() {
+        return urlFileContent;
     }
 
-    public void setUrlFile(String urlFile) {
-        this.urlFile = urlFile;
+    public void setUrlFileContent(String urlFileContent) {
+        this.urlFileContent = urlFileContent;
     }
 
-    public String getMimeType() {
-        return mimeType;
+    public String getMimeTypeContent() {
+        return mimeTypeContent;
     }
 
-    public void setMimeType(String mimeType) {
-        this.mimeType = mimeType;
+    public void setMimeTypeContent(String mimeTypeContent) {
+        this.mimeTypeContent = mimeTypeContent;
     }
 
-    public float getPrice() {
-        return price;
+    public float getPriceContent() {
+        return priceContent;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
+    public void setPriceContent(float priceContent) {
+        this.priceContent = priceContent;
     }
 
-    public Timestamp getCreateAt() {
-        return createAt;
+    public Timestamp getCreateAtContent() {
+        return createAtContent;
     }
 
-    public void setCreateAt(Timestamp createAt) {
-        this.createAt = createAt;
+    public void setCreateAtContent(Timestamp createAtContent) {
+        this.createAtContent = createAtContent;
     }
 
-    public Timestamp getUpdateAt() {
-        return updateAt;
+    public Timestamp getUpdateAtContent() {
+        return updateAtContent;
     }
 
-    public void setUpdateAt(Timestamp updateAt) {
-        this.updateAt = updateAt;
+    public void setUpdateAtContent(Timestamp updateAtContent) {
+        this.updateAtContent = updateAtContent;
     }
 }

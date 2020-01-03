@@ -61,11 +61,9 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:layout_marginTop="25dp"
-        android:layout_marginBottom="25dp"
         android:background="@android:color/white"
         android:fitsSystemWindows="false"
-        android:paddingBottom="20dp">
+        android:paddingTop="24sp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -79,12 +77,14 @@
                 android:background="@color/colorPrimary"
                 android:gravity="center"
                 android:padding="12dp"
+                android:paddingTop="24sp"
                 android:text="@string/table_of_contents"
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview_chapter"
+
+            <ListView
+                android:id="@+id/list_view_chapter"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>

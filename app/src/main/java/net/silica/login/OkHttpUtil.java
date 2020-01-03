@@ -26,7 +26,7 @@ public class OkHttpUtil {
     public String excuteLogInPost(String url, String json) {
         String credential = Credentials.basic("jesse", "password145");
         System.out.println(credential);
-        RequestBody body = RequestBody.create(JSON, json);
+        RequestBody body = RequestBody.create(json,JSON);
         client = new OkHttpClient();
         String data = "{\"success\":\"0\",\"message\":\"Null\"}";
         Request request = new Request.Builder()

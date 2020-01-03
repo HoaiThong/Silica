@@ -4,30 +4,22 @@ import android.annotation.SuppressLint;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.PowerManager;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -38,6 +30,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -53,7 +46,7 @@ import net.silica.R;
 import net.silica.model.Book;
 import net.silica.model.Content;
 import net.silica.readView.adapter.ChapterAdapter;
-import net.silica.readView.adapter.RecyclerViewClickListener;
+import net.silica.readView.adapter.ItemClickListener;
 import net.silica.readView.config.ModeUtils;
 import net.silica.readView.config.SettingMode;
 import net.silica.readView.dao.HTMLParser;
@@ -167,7 +160,8 @@ public class EpubViewerActivity extends AppCompatActivity {
     private String nameFileCache = "cache.txt";
     private int mPosition = 0;
     RecyclerView mRecyclerViewChapter;
-    ChapterAdapter chapterAdapter;
+    ChapterAdapter adapter;
+    ListView listViewChapter;
 
 
     private float touchX, touchY;
@@ -194,6 +188,8 @@ public class EpubViewerActivity extends AppCompatActivity {
         mContext = this;
         epubBook = new EpubBook();
         mToc = new TableOfContent();
+//        Content content = (Content) getIntent().getSerializableExtra("content");
+//        this.url = content.getUrlFileContent();
         hide();
         initScreenXY();
 
@@ -223,6 +219,7 @@ public class EpubViewerActivity extends AppCompatActivity {
         mContentView = findViewById(R.id.fullscreen_content);
         mNavigationView = findViewById(R.id.nav_view);
         title_book_tv = findViewById(R.id.tv_nav_title_book);
+        listViewChapter = findViewById(R.id.list_view_chapter);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -376,26 +373,24 @@ public class EpubViewerActivity extends AppCompatActivity {
 
     }
 
-    public void initRecyclerView() {
-        mRecyclerViewChapter = (RecyclerView) findViewById(R.id.recyclerview_chapter);
-        chapterAdapter = new ChapterAdapter(mRecyclerViewClickListener);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        for (TableOfContent.Chapter c : mToc.getChapterList()) {
-            System.out.println(c.getTitle());
-        }
-        chapterAdapter.addListTitle(mToc.getChapterList());
-        mRecyclerViewChapter.setLayoutManager(layoutManager);
-        mRecyclerViewChapter.setAdapter(chapterAdapter);
-        mRecyclerViewChapter.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+    public void initChapterMenu() {
+        adapter = new ChapterAdapter(this, mToc.getChapterList());
+        listViewChapter.setAdapter(adapter);
+        adapter.setItemClickListener(new ItemClickListener() {
             @Override
-            public void onGlobalLayout() {
-                View itemView = mRecyclerViewChapter.getChildAt(mPosition);
-                TextView tv = itemView.findViewById(R.id.text_title);
-                tv.setTextColor(getApplicationContext().getResources().getColor(R.color.black));
-                mRecyclerViewChapter.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            public void onClick(View view, int position, boolean isLongClick) {
+                mPosition = position;
+                TableOfContent.Chapter chapter = mToc.getChapterList().get(position);
+                String pathChapter = chapter.getUrl();
+                pathChapter = epubCommon.getBasePath() + File.separatorChar + pathChapter;
+                String urlChapter = pathChapter.substring(
+                        pathChapter.lastIndexOf("/") + 1);
+                presentPage = 0;
+                initJS(urlChapter);
+//            loadEpubWebview(urlBlankPage);
+                loadEpubWebview(urlLoader);
             }
         });
-
     }
 
     public void initCSS() {
@@ -475,22 +470,30 @@ public class EpubViewerActivity extends AppCompatActivity {
         }
     }
 
+    public void load() {
+//        adapter.getView(mPosition,null,null);
+        TableOfContent.Chapter chapter = mToc.getChapterList().get(mPosition);
+        String pathChapter = chapter.getUrl();
+        pathChapter = epubCommon.getBasePath() + File.separatorChar + pathChapter;
+        String urlChapter = pathChapter.substring(
+                pathChapter.lastIndexOf("/") + 1);
+        presentPage = 0;
+        initJS(urlChapter);
+//            loadEpubWebview(urlBlankPage);
+        loadEpubWebview(urlLoader);
+    }
+
     public void loadnextpage() {
         presentPage++;
         int x = presentPage * (columnWidth - 0);
         if ((presentPage) > mContentView.getContentWidth() / columnWidth - 1) {
 //            presentPage = 0;
 //            mContentView.scrollTo(0, 0);
-            mPosition++;
-            mRecyclerViewChapter.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    View itemView = mRecyclerViewChapter.getChildAt(mPosition);
-                    TextView tv = itemView.findViewById(R.id.text_title);
-                    tv.setTextColor(getApplicationContext().getResources().getColor(R.color.black));
-                    mRecyclerViewChapter.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                }
-            });
+            if (mPosition < mToc.getChapterList().size()) {
+                mPosition++;
+                load();
+            } else presentPage--;
+
         } else {
             mContentView.scrollTo(x, 0);
             savePageChapterFileCache();
@@ -500,24 +503,6 @@ public class EpubViewerActivity extends AppCompatActivity {
     private void doBack() {
         finish();
     }
-
-    private RecyclerViewClickListener mRecyclerViewClickListener = new RecyclerViewClickListener() {
-        @Override
-        public void onClick(View view, int position) {
-            mPosition = position;
-            TextView tv = view.findViewById(R.id.text_title);
-            tv.setTextColor(getResources().getColor(R.color.black));
-            TableOfContent.Chapter chapter = mToc.getChapterList().get(position);
-            String pathChapter = chapter.getUrl();
-            pathChapter = epubCommon.getBasePath() + File.separatorChar + pathChapter;
-            String urlChapter = pathChapter.substring(
-                    pathChapter.lastIndexOf("/") + 1);
-            presentPage = 0;
-            initJS(urlChapter);
-//            loadEpubWebview(urlBlankPage);
-            loadEpubWebview(urlLoader);
-        }
-    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -539,6 +524,8 @@ public class EpubViewerActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.epub_menu_font_text:
+                SettingViewerDialog settingViewerDialog = new SettingViewerDialog(this, getSupportFragmentManager());
+                settingViewerDialog.show();
                 break;
             case R.id.epub_menu_light:
                 if (mode.getBgColor().equals("white")) {
@@ -817,7 +804,8 @@ public class EpubViewerActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             EpubViewerActivity read = readRfc.get();
             if (read != null) {
-                initRecyclerView();
+//                initRecyclerView();
+                initChapterMenu();
                 title_book_tv.setText(epubBook.title);
                 read.loadEpubWebview(urlLoader);
 //            mProgressDialog.dismiss();

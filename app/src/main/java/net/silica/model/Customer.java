@@ -4,77 +4,53 @@ import com.google.gson.annotations.Expose;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Locale;
 
-public class Customer {
+public class Customer implements Serializable{
     //Gson serializable
-    @Expose(serialize = false)
-    private int id;
-    @Expose
+    private int idCustomer;
     private String idFacebook="";
-    @Expose
     private String idGoogle="";
-    @Expose
-    private String idAccoutKit="";
-    @Expose
-    private String nameFaceBook="";
-    @Expose
-    private String nameGoogle="";
-    @Expose
-    private String firstName="";
-    @Expose
-    private String secondName="";
-    @Expose
-    private String linkFacebook="";
-    @Expose
-    private String phone="";
-    @Expose
-    private String phoneFacebook="";
-    @Expose
-    private String emailFacebook="";
-    @Expose
-    private String emailGoogle="";
-    @Expose
-    private String emailAccoutKit="";
-    @Expose
-    private String address="";
-    @Expose
-    private String sex="";
-    @Expose
-    private String dateOfBirth="";
-    @Expose
     private String idTokenFcm="";
-    @Expose
+    private String nameFaceBook="";
+    private String nameGoogle="";
+    private String firstName="";
+    private String lastName="";
+    private String linkFacebook="";
+    private String phone="";
+    private String phoneFacebook="";
+    private String emailFacebook="";
+    private String emailGoogle="";
+    private String address="";
+    private String sex="";
+    private String dateOfBirth="";
+    private String ageRange="";
+    private String fcmToken="";
     private String job="";
-    @Expose(serialize = false)
-    private Timestamp createAt;
+    private String locale;
+    private String iconUrlCustomer="";
+//    @Expose(serialize = false)
+    private Timestamp createAtCustomer;
     @Expose(serialize = false)//=@Expose(serialize = false, deserialize = true)
-    private Timestamp updateAt;
+    private Timestamp updateAtCustomer;
 
     public Customer() {
     }
 
-    public String getIdAccoutKit() {
-        return idAccoutKit;
+    public String getAgeRange() {
+        return ageRange;
     }
 
-    public void setIdAccoutKit(String idAccoutKit) {
-        this.idAccoutKit = idAccoutKit;
+    public void setAgeRange(String ageRange) {
+        this.ageRange = ageRange;
     }
 
-    public String getEmailAccoutKit() {
-        return emailAccoutKit;
+    public String getFcmToken() {
+        return fcmToken;
     }
 
-    public void setEmailAccoutKit(String emailAccoutKit) {
-        this.emailAccoutKit = emailAccoutKit;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 
     public String getIdFacebook() {
@@ -125,12 +101,12 @@ public class Customer {
         this.firstName = firstName;
     }
 
-    public String getSecondName() {
-        return secondName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPhone() {
@@ -205,19 +181,68 @@ public class Customer {
         this.job = job;
     }
 
-    public Timestamp getCreateAt() {
-        return createAt;
+    public String getLocale() {
+
+        return locale;
     }
 
-    public void setCreateAt(Timestamp createAt) {
-        this.createAt = createAt;
+    public void setLocale(String locale) {
+        this.locale = locale;
     }
 
-    public Timestamp getUpdateAt() {
-        return updateAt;
+    public int getIdCustomer() {
+        return idCustomer;
     }
 
-    public void setUpdateAt(Timestamp updateAt) {
-        this.updateAt = updateAt;
+    public void setIdCustomer(int idCustomer) {
+        this.idCustomer = idCustomer;
+    }
+
+    public String getIconUrlCustomer() {
+        return iconUrlCustomer;
+    }
+
+    public void setIconUrlCustomer(String iconUrlCustomer) {
+        this.iconUrlCustomer = iconUrlCustomer;
+    }
+
+    public Timestamp getCreateAtCustomer() {
+        return createAtCustomer;
+    }
+
+    public void setCreateAtCustomer(Timestamp createAtCustomer) {
+        this.createAtCustomer = createAtCustomer;
+    }
+
+    public Timestamp getUpdateAtCustomer() {
+        return updateAtCustomer;
+    }
+
+    public void setUpdateAtCustomer(Timestamp updateAtCustomer) {
+        this.updateAtCustomer = updateAtCustomer;
+    }
+
+    public String toJSONNoId(){
+        String json="{\"address\":\""+address+"\"," +
+                "\"dateOfBirth\":\""+dateOfBirth+"\"," +
+                "\"emailFacebook\":\""+emailFacebook+"\"," +
+                "\"emailGoogle\":\""+emailGoogle+"\"," +
+                "\"firstName\":\""+firstName+"\"," +
+                "\"idFacebook\":\""+idFacebook+"\"," +
+                "\"idGoogle\":\""+idGoogle+"\"," +
+                "\"idTokenFcm\":\""+idTokenFcm+"\"," +
+                "\"fcmToken\":\""+fcmToken+"\"," +
+                "\"iconUrlCustomer\":\""+iconUrlCustomer+"\"," +
+                "\"job\":\""+job+"\"," +
+                "\"locale\":\""+locale+"\"," +
+                "\"linkFacebook\":\""+linkFacebook+"\"," +
+                "\"nameFaceBook\":\""+nameFaceBook+"\"," +
+                "\"nameGoogle\":\""+nameGoogle+"\"," +
+                "\"phone\":\""+phone+"\"," +
+                "\"phoneFacebook\":\""+phoneFacebook+"\"," +
+                "\"lastName\":\""+lastName+"\"," +
+                "\"ageRange\":\""+ageRange+"\"," +
+                "\"sex\":\""+sex+"\"}";
+        return json;
     }
 }

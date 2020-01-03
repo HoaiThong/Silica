@@ -1,6 +1,7 @@
 package net.silica.login;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -54,6 +55,7 @@ import net.silica.fcm.FcmUtil;
 import net.silica.imageSliderViewPager.IndicatorView;
 import net.silica.imageSliderViewPager.PagesLessException;
 import net.silica.model.Customer;
+import net.silica.sessionApp.SessionManager;
 import net.silica.splashScreenView.SplashScreenActivity;
 
 import org.json.JSONArray;
@@ -71,14 +73,12 @@ import java.util.TimerTask;
 
 public class SignInActivity extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mAuth;
-    SignInButton signInButton;
     GoogleSignInClient mGoogleSignInClient;
     public static int APP_REQUEST_CODE = 99;
     private static final String TAG = "LoginActivity";
     private static final int RC_SIGN_IN = 9001;
     private CallbackManager callbackManager;
     private FacebookCallback<LoginResult> loginResult;
-    LoginButton fbLoginBtn;
     FcmUtil fcmUtil;
     Customer customer;
     SignInDAO signInDAO;
@@ -91,16 +91,27 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     int page = 0;
     ArrayList<String> listImageSlider;
 
+
+    private SignInButton signInButton;
+    private LoginButton fbLoginBtn;
+    private TabLayout tabLayout;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) actionBar.hide();
         viewPager = findViewById(R.id.viewPager);
-        indicatorView = findViewById(R.id.indicator);
+        tabLayout=findViewById(R.id.tablayout);
+        findViewById(R.id.ibtn_facebook).setOnClickListener(this);
+        findViewById(R.id.ibtn_google).setOnClickListener(this);
         initViewPager();
 
         fcmUtil = new FcmUtil(this);
         fcmUtil.accessToken();
+        fcmUtil.subscribe("10001");
         receiver = new NetworkChangeReceiver();
         final IntentFilter filter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(receiver, filter);
@@ -122,6 +133,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         fbLoginBtn = (LoginButton) findViewById(R.id.btnLoginFb);
+        fbLoginBtn.setOnClickListener(this);
         fbLoginBtn.setReadPermissions(Arrays.asList("public_profile", "user_friends", "email"));
         fbLoginBtn.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -131,7 +143,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 //                Toast.makeText(getApplicationContext(), "Login Facebook success.", Toast.LENGTH_SHORT).show();
                 signInDAO = new SignInDAO(SignInActivity.this);
                 signInDAO.sendRegistrationFacebookToServe();
-                redirect();
 
             }
 
@@ -156,8 +167,15 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onStart() {
         super.onStart();
+        SessionManager sessionManager = new SessionManager(SignInActivity.this);
+        String idUser = sessionManager.getReaded("idUser");
+
         if (isLoggedInFaceBook() || isLoggedInGoogle()) {
-            redirect();
+            if (idUser.equals("")) {
+                String data = sessionManager.getReaded("datauser");
+                signInDAO = new SignInDAO(SignInActivity.this);
+                signInDAO.registerServer(data);
+            }else redirect();
         }
     }
 
@@ -187,17 +205,14 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnLoginGg:
-//                signInButton.performClick();
-//                onLoadGmail();
+            case R.id.ibtn_google:
+                signInButton.performClick();
                 signIn();
                 break;
-            case R.id.btnLoginFb:
+            case R.id.ibtn_facebook:
+                fbLoginBtn.performClick();
                 loginFaceBook();
                 break;
-//            case R.id.btnLoginPhone:
-//                phoneLogin(v);
-//                break;
         }
     }
 
@@ -221,7 +236,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 //                firebaseAuthWithGoogle(account);
                 signInDAO = new SignInDAO(SignInActivity.this);
                 signInDAO.sendRegistrationGoogleToServe(account);
-                redirect();
+//                redirect();
 
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
@@ -230,59 +245,14 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             }
         }
 
-
-//        if (requestCode == APP_REQUEST_CODE) { // confirm that this response matches your request
-//            AccountKitLoginResult loginResult = data.getParcelableExtra(AccountKitLoginResult.RESULT_KEY);
-//            String toastMessage;
-//            if (loginResult.getError() != null) {
-//                toastMessage = loginResult.getError().getErrorType().getMessage();
-////                showErrorActivity(loginResult.getError());
-//            } else if (loginResult.wasCancelled()) {
-//                toastMessage = "Login Cancelled";
-//            } else {
-//                if (loginResult.getAccessToken() != null) {
-//                    signInDAO = new SignInDAO(SignInActivity.this);
-//                    signInDAO.sendRegistrationPhoneToServe();
-//                    redirect();
-//
-//                    toastMessage = "Success:" + loginResult.getAccessToken().getAccountId();
-//                } else {
-//                    toastMessage = String.format(
-//                            "Success:%s...",
-//                            loginResult.getAuthorizationCode().substring(0, 10));
-//                }
-//            }
-////            Toast.makeText(
-////                    this,
-////                    toastMessage,
-////                    Toast.LENGTH_LONG)
-////                    .show();
-//        }
-
     }
-
-//    public void phoneLogin(final View view) {
-//        final Intent intent = new Intent(this, AccountKitActivity.class);
-//        AccountKitConfiguration.AccountKitConfigurationBuilder configurationBuilder =
-//                new AccountKitConfiguration.AccountKitConfigurationBuilder(
-//                        LoginType.PHONE,
-//                        AccountKitActivity.ResponseType.TOKEN); // or .ResponseType.TOKEN
-//        // ... perform additional configuration ...
-//        intent.putExtra(
-//                AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
-//                configurationBuilder.build());
-//        startActivityForResult(intent, APP_REQUEST_CODE);
-//    }
 
     public void initViewPager() {
         listImageSlider = getImageSlider();
         ImageAdapter adapter = new ImageAdapter(this, listImageSlider);
         viewPager.setAdapter(adapter);
-        try {
-            indicatorView.setViewPager(viewPager);
-        } catch (PagesLessException e) {
-            e.printStackTrace();
-        }
+        tabLayout.setupWithViewPager(viewPager);
+        viewPager.setCurrentItem(page);
         pageSwitcher(3);
     }
 
@@ -360,9 +330,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
         @Override
         public void run() {
-
-            // As the TimerTask run on a seprate thread from UI thread we have
-            // to call runOnUiThread to do work on UI thread.
             runOnUiThread(new Runnable() {
                 public void run() {
 
@@ -370,14 +337,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 //                        timer.cancel();
                         page = 0;
                         viewPager.setCurrentItem(page);
-//                        indicatorView.onPageSelected(page);
-//                        // Showing a toast for just testing purpose
-//                        Toast.makeText(getApplicationContext(), "Timer stoped",
-//                                Toast.LENGTH_LONG).show();
                     } else {
                         page++;
                         viewPager.setCurrentItem(page);
-//                        indicatorView.onPageSelected(page);
                     }
                 }
             });

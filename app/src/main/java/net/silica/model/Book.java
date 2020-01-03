@@ -6,177 +6,188 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 public class Book implements Serializable {
+
     @Expose
-    private int id;
+    private int idBook;
     @Expose
-    private String name;
+    private String nameBook;
     @Expose
-    private String foreignName;
+    private String foreignNameBook;
     @Expose
-    private String author;
+    private String authorBook;
     @Expose
-    private String summary;
+    private String summaryBook;
     @Expose
-    private String country;
+    private String countryBook;
     @Expose
-    private String tag;
+    private String tagBook;
     @Expose
-    private String icon;
+    private String iconBook;
     @Expose
-    private float price;
+    private float priceOriginBook;
     @Expose
-    private float scoreRating;
+    private float scoreRatingBook;
     @Expose
-    private int viewQuantity;
+    private long viewSumBook;
     @Expose
-    private int viewWeek;
+    private int viewWeekBook;
     @Expose
-    private int viewMonth;
+    private int viewMonthBook;
     @Expose
-    private String namsx;
+    private int viewDayBook;
     @Expose
-    private String nxb;
+    private String namsxBook;
+    @Expose
+    private String nxbBook;
     @Expose(serialize = false, deserialize = true)
-    private Timestamp createAt;
+    private Timestamp createAtBook;
     @Expose(serialize = false, deserialize = true)
-    private Timestamp updateAt;
+    private Timestamp updateAtBook;
 
     public Book() {
     }
 
-    public String getCountry() {
-        return country;
+    public int getIdBook() {
+        return idBook;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setIdBook(int idBook) {
+        this.idBook = idBook;
     }
 
-    public int getId() {
-        return id;
+    public String getNameBook() {
+        return nameBook;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setNameBook(String nameBook) {
+        this.nameBook = nameBook;
     }
 
-    public String getForeignName() {
-        return foreignName;
+    public String getForeignNameBook() {
+        return foreignNameBook;
     }
 
-    public void setForeignName(String foreignName) {
-        this.foreignName = foreignName;
+    public void setForeignNameBook(String foreignNameBook) {
+        this.foreignNameBook = foreignNameBook;
     }
 
-    public String getName() {
-        return name;
+    public String getAuthorBook() {
+        return authorBook;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAuthorBook(String authorBook) {
+        this.authorBook = authorBook;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getSummaryBook() {
+        return summaryBook;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setSummaryBook(String summaryBook) {
+        this.summaryBook = summaryBook;
     }
 
-    public String getSummary() {
-        return summary;
+    public String getCountryBook() {
+        return countryBook;
     }
 
-    public void setSummary(String summary) {
-        this.summary = summary;
+    public void setCountryBook(String countryBook) {
+        this.countryBook = countryBook;
     }
 
-    public String getTag() {
-        return tag;
+    public String getTagBook() {
+        return tagBook;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setTagBook(String tagBook) {
+        this.tagBook = tagBook;
     }
 
-    public String getIcon() {
-        return icon;
+    public String getIconBook() {
+        return iconBook;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setIconBook(String iconBook) {
+        this.iconBook = iconBook;
     }
 
-    public float getPrice() {
-        return price;
+    public float getPriceOriginBook() {
+        return priceOriginBook;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
+    public void setPriceOriginBook(float priceOriginBook) {
+        this.priceOriginBook = priceOriginBook;
     }
 
-    public float getScoreRating() {
-        return scoreRating;
+    public float getScoreRatingBook() {
+        return scoreRatingBook;
     }
 
-    public void setScoreRating(float scoreRating) {
-        this.scoreRating = scoreRating;
+    public void setScoreRatingBook(float scoreRatingBook) {
+        this.scoreRatingBook = scoreRatingBook;
     }
 
-    public int getViewQuantity() {
-        return viewQuantity;
+    public long getViewSumBook() {
+        return viewSumBook;
     }
 
-    public void setViewQuantity(int viewQuantity) {
-        this.viewQuantity = viewQuantity;
+    public void setViewSumBook(long viewSumBook) {
+        this.viewSumBook = viewSumBook;
     }
 
-    public int getViewWeek() {
-        return viewWeek;
+    public int getViewWeekBook() {
+        return viewWeekBook;
     }
 
-    public void setViewWeek(int viewWeek) {
-        this.viewWeek = viewWeek;
+    public void setViewWeekBook(int viewWeekBook) {
+        this.viewWeekBook = viewWeekBook;
     }
 
-    public int getViewMonth() {
-        return viewMonth;
+    public int getViewMonthBook() {
+        return viewMonthBook;
     }
 
-    public void setViewMonth(int viewMonth) {
-        this.viewMonth = viewMonth;
+    public void setViewMonthBook(int viewMonthBook) {
+        this.viewMonthBook = viewMonthBook;
     }
 
-    public String getNamsx() {
-        return namsx;
+    public int getViewDayBook() {
+        return viewDayBook;
     }
 
-    public void setNamsx(String namsx) {
-        this.namsx = namsx;
+    public void setViewDayBook(int viewDayBook) {
+        this.viewDayBook = viewDayBook;
     }
 
-    public String getNxb() {
-        return nxb;
+    public String getNamsxBook() {
+        return namsxBook;
     }
 
-    public void setNxb(String nxb) {
-        this.nxb = nxb;
+    public void setNamsxBook(String namsxBook) {
+        this.namsxBook = namsxBook;
     }
 
-    public Timestamp getCreateAt() {
-        return createAt;
+    public String getNxbBook() {
+        return nxbBook;
     }
 
-    public void setCreateAt(Timestamp createAt) {
-        this.createAt = createAt;
+    public void setNxbBook(String nxbBook) {
+        this.nxbBook = nxbBook;
     }
 
-    public Timestamp getUpdateAt() {
-        return updateAt;
+    public Timestamp getCreateAtBook() {
+        return createAtBook;
     }
 
-    public void setUpdateAt(Timestamp updateAt) {
-        this.updateAt = updateAt;
+    public void setCreateAtBook(Timestamp createAtBook) {
+        this.createAtBook = createAtBook;
+    }
+
+    public Timestamp getUpdateAtBook() {
+        return updateAtBook;
+    }
+
+    public void setUpdateAtBook(Timestamp updateAtBook) {
+        this.updateAtBook = updateAtBook;
     }
 }

@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
+
 import net.silica.R;
 import net.silica.imageSliderViewPager.IndicatorView;
 import net.silica.imageSliderViewPager.PagesLessException;
@@ -34,7 +36,7 @@ public class HomeFragment extends Fragment {
     private ListView listView;
     private View view;
     private ViewPager viewPager;
-    private IndicatorView indicatorView;
+    private TabLayout indicatorView;
     Timer timer;
     int page = 0;
     ArrayList<String> listImageSlider;
@@ -137,11 +139,8 @@ public class HomeFragment extends Fragment {
         listImageSlider = getImageSlider();
         ImageAdapter adapter = new ImageAdapter(mActivity, listImageSlider);
         viewPager.setAdapter(adapter);
-        try {
-            indicatorView.setViewPager(viewPager);
-        } catch (PagesLessException e) {
-            e.printStackTrace();
-        }
+        indicatorView.setupWithViewPager(viewPager);
+        viewPager.setCurrentItem(page);
         pageSwitcher(3);
     }
 
